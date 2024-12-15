@@ -10,5 +10,5 @@ edition = "2021"
 
 [dependencies]
 serde_json = "1.0"
-svgdx = { version = "0.14.0", default-features = false }
+svgdx = { version = "0.15.1", default-features = false }
 tempfile = "3.14.0"

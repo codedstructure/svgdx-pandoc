@@ -1,4 +1,4 @@
-## Very Important Idea
+## An Important Idea
 
 Communicating important ideas can be effective when *text* and *diagrams* are combined.
 
