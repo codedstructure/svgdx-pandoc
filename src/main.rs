@@ -24,7 +24,7 @@ fn is_svgdx_block(object: &serde_json::Map<String, Value>) -> Option<String> {
                 if let [meta, content] = inner.as_slice() {
                     // expand array to the three components we expect
                     if let [_ident, classes, _attrs] = meta.as_array().unwrap().as_slice() {
-                        if classes.get(0).unwrap().as_str() == Some("svgdx") {
+                        if let Some("svgdx") = classes.get(0).map(|v| v.as_str()).flatten() {
                             return Some(content.as_str().unwrap().to_string());
                         }
                     }

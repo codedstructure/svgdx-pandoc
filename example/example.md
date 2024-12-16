@@ -12,7 +12,6 @@ Communicating important ideas can be effective when *text* and *diagrams* are co
 
 This may increase both understanding and retention.
 
-
 ```svgdx
 <svg>
   <rect rx="2" surround="#u1 #u2 #r1 #r2" margin="3" class="d-dot d-fill-lavender"/>
@@ -24,3 +23,19 @@ This may increase both understanding and retention.
 ```
 
 Maybe try this in **your** next document!
+
+```test
+def fn():
+  pass
+```
+
+``` test {x=1}
+```
+
+```
+def ident(x):
+  return x
+```
+
+
+Fin.
