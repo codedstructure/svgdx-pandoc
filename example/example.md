@@ -4,6 +4,13 @@ Communicating important ideas can be effective when *text* and *diagrams* are co
 
 ```svgdx
 <svg>
+<rect wh="20" style="fill: red"/>
+<rect xy="^:h 10" wh="20" style="fill: blue"/>
+</svg>
+```
+
+```svgdx
+<svg>
   <rect rx="2" surround="#w #d" margin="3" class="d-dot d-fill-lavender"/>
   <rect id="w" wh="20 10" text="Words" class="d-fill-lightblue"/>
   <ellipse id="d" xy="^:h 5" rxy="10 5" text="Diagrams" class="d-fill-khaki"/>
