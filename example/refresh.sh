@@ -7,6 +7,6 @@ if ! command -v "${FILTER_BIN}" > /dev/null ; then
     exit 2
 fi
 
-for FMT in html epub pdf; do
-    pandoc --filter "${FILTER_BIN}" example.md -o example.${FMT}
+for FMT in md html epub pdf docx pptx; do
+    pandoc --filter "${FILTER_BIN}" example.md -o output.${FMT}
 done
