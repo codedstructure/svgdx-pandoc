@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0 - 2024-12-31]
+
+- Includes svgdx 0.16.0
+
+- Support for more output formats (docx, pptx), converting SVG to PNG when required.
+
 ## [0.1.0 - 2024-12-15]
 
 - Initial release using svgdx 0.15.1

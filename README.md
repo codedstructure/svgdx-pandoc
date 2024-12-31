@@ -1,6 +1,6 @@
 # svgdx-pandoc
 
-A [pandoc][] filter to convert [svgdx][] fenced code blocks into inline SVG images.
+A [pandoc][] filter to convert [svgdx][] fenced code blocks into inline images.
 
 [pandoc]: https://pandoc.org
 [svgdx]: https://github.com/codedstructure/svgdx
@@ -29,23 +29,22 @@ To create various other documents from this, try the following after cloning thi
 
 ```bash
 svgdx-pandoc$ cd example/
-svgdx-pandoc/example$
-svgdx-pandoc/example$ for FMT in html epub pdf; do pandoc --filter svgdx-pandoc example.md -o example.${FMT} ; done
+svgdx-pandoc/example$ ./refresh.sh
 ```
 
 Try opening the various generated files; note that some output formats tend to work more reliably than others,
-for example `.docx` files may not preserve styles accurately. Converting images to PNG (e.g. via Inkscape)
-may be appropriate in this case and may be added in a future version.
 
 ## How it works
 
-This filter has two modes of operation, selected automatically based on the target document format
+This filter has three modes of operation, selected automatically based on the target document format
 (which pandoc provides as the sole argument to a filter):
 
-* For **html** and **epub** output, the rendered SVG is included inline within the rendered document;
+* For `html` and `epub` output, the rendered SVG is included inline within the rendered document;
   for example a generated HTML document will contain an SVG element at the appropriate location.
-* For other formats (e.g. **PDF**, **odt**), raw inline SVG elements are not supported, so temporary
+* For formats such as `PDF`, `odt`, raw inline SVG elements are not supported, so temporary
   image files are created with associated image links.
+* For `docx` and `pptx`, support for SVG images isn't great, so images are converted to PNG files
+  using `ImageMagick` or `Inkscape` if present.
 
 ### Temporary files
 
@@ -76,4 +75,4 @@ svgdx = { path = "/path/to/svgdx", default-features = false }
 
 ## License
 
-This repository is released under the MIT license; for more information see the [LICENSE](LICENSE) file.
+svgdx-pandoc is released under the MIT license; for more information see the [LICENSE](LICENSE) file.
