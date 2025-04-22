@@ -1,6 +1,6 @@
 [package]
 name = "svgdx-pandoc"
-version = "0.4.0"
+version = "0.5.0"
 description = "pandoc filter for svgdx codeblocks in Markdown"
 authors = ["Ben Bass <benbass@codedstructure.net>"]
 repository = "https://github.com/codedstructure/svgdx-pandoc"
@@ -10,5 +10,5 @@ edition = "2021"
 
 [dependencies]
 serde_json = "1.0"
-svgdx = { version = "0.19.0", default-features = false }
+svgdx = { version = "0.20.0", default-features = false }
 tempfile = "3.16.0"
