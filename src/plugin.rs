@@ -90,7 +90,7 @@ impl SvgdxPlugin {
                         .prefix("tmp-svgdx-")
                         .suffix(".svg")
                         // must persist - pandoc will need it beyond our lifetime
-                        .keep(true)
+                        .disable_cleanup(true)
                         .tempfile_in(
                             self.tmpdir
                                 .as_ref()
