@@ -3,6 +3,7 @@ use crate::transform::{svgdx_handler, TransformResult};
 
 use serde_json::Value;
 
+use std::cell::OnceCell;
 use std::env;
 use std::io::Write;
 use std::path::{Path, PathBuf};
@@ -65,7 +66,7 @@ pub trait PandocPlugin {
 pub struct SvgdxPlugin {
     embed: EmbedType,
     tmpdir: Option<String>,
-    converter: PngConverter,
+    converter: OnceCell<PngConverter>,
 }
 
 impl SvgdxPlugin {
@@ -73,7 +74,7 @@ impl SvgdxPlugin {
         SvgdxPlugin {
             embed,
             tmpdir,
-            converter: PngConverter::new(),
+            converter: OnceCell::new(),
         }
     }
 
@@ -103,11 +104,15 @@ impl SvgdxPlugin {
                     drop(tmpfile); // close file to flush
                     match self.embed {
                         EmbedType::SvgFile => BlockType::Image(imgfile),
-                        EmbedType::PngFile => match self.converter.to_png(&imgfile) {
+                        EmbedType::PngFile => match self
+                            .converter
+                            .get_or_init(PngConverter::new)
+                            .to_png(&imgfile)
+                        {
                             Ok(pngfile) => BlockType::Image(pngfile),
                             // usability: better to fail hard than risk missing images
                             // through e.g. inserting error messages in generated doc
-                            Err(e) => panic!("PNG conversion failed: {}", e),
+                            Err(e) => panic!("PNG conversion failed: {e}"),
                         },
                         _ => unreachable!(),
                     }

@@ -15,6 +15,7 @@ Install `svgdx-pandoc` as follows:
 cargo install svgdx-pandoc
 ```
 
+
 ## Usage
 
 Basic usage of the filter is as follows; note the output format is inferred from the output file extension.
@@ -43,8 +44,10 @@ This filter has three modes of operation, selected automatically based on the ta
   for example a generated HTML document will contain an SVG element at the appropriate location.
 * For formats such as `PDF`, `odt`, raw inline SVG elements are not supported, so temporary
   image files are created with associated image links.
-* For `docx` and `pptx`, support for SVG images isn't great, so images are converted to PNG files
-  using `ImageMagick` or `Inkscape` if present.
+* For `docx` and `pptx`, support for SVG images isn't great, so images are converted to PNG files.
+  Conversion methods include rsvg-convert, imagemagick, and the Inkscape command line.
+  `rsvg-convert` should give effective results in most cases; install with `brew install librsvg`
+  on MacOS (Homebrew); `apt install librsvg2-bin` on Ubuntu and Debian.
 
 ### Temporary files
 

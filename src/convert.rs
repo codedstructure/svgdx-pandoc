@@ -7,7 +7,35 @@ trait PngConvert: Send + Sync + std::fmt::Debug {
 }
 
 #[derive(Debug)]
-struct ImageMagick {}
+struct RsvgConverter;
+
+impl PngConvert for RsvgConverter {
+    fn supported(&self) -> bool {
+        Command::new("rsvg-convert")
+            .arg("--version")
+            .output()
+            .is_ok()
+    }
+
+    fn convert(&self, svgfile: &Path, pngfile: &Path) -> Result<PathBuf, String> {
+        let mut cmd = Command::new("rsvg-convert");
+        // TODO: consider '--background-color'
+        cmd.args([
+            "--format=png",
+            "--dpi-x=300",
+            "--dpi-y=300",
+            "-o",
+            pngfile.to_str().expect("Invalid PNG path"),
+            svgfile.to_str().expect("Invalid SVG path"),
+        ]);
+        cmd.output()
+            .map(|_| pngfile.to_path_buf())
+            .map_err(|e| e.to_string())
+    }
+}
+
+#[derive(Debug)]
+struct ImageMagick;
 
 impl PngConvert for ImageMagick {
     fn supported(&self) -> bool {
@@ -29,7 +57,7 @@ impl PngConvert for ImageMagick {
 }
 
 #[derive(Debug)]
-struct Inkscape {}
+struct Inkscape;
 
 impl PngConvert for Inkscape {
     fn supported(&self) -> bool {
@@ -52,7 +80,7 @@ impl PngConvert for Inkscape {
 }
 
 #[derive(Debug)]
-struct FallbackConverter {}
+struct FallbackConverter;
 
 impl PngConvert for FallbackConverter {
     fn supported(&self) -> bool {
@@ -70,14 +98,21 @@ pub struct PngConverter {
 
 impl PngConverter {
     pub fn new() -> Self {
-        let converter: Box<dyn PngConvert> = if (ImageMagick {}).supported() {
-            Box::new(ImageMagick {}) as Box<dyn PngConvert>
-        } else if (Inkscape {}).supported() {
-            Box::new(Inkscape {}) as Box<dyn PngConvert>
-        } else {
-            Box::new(FallbackConverter {}) as Box<dyn PngConvert>
-        };
-        PngConverter { converter }
+        let converter_list = [
+            Box::new(RsvgConverter {}) as Box<dyn PngConvert>,
+            Box::new(ImageMagick {}) as Box<dyn PngConvert>,
+            Box::new(Inkscape {}) as Box<dyn PngConvert>,
+        ];
+
+        // Use the first available converter
+        for converter in converter_list {
+            if converter.supported() {
+                return PngConverter { converter };
+            }
+        }
+        PngConverter {
+            converter: Box::new(FallbackConverter {}),
+        }
     }
 
     pub fn to_png(&self, svgfile: &Path) -> Result<PathBuf, String> {
