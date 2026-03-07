@@ -30,7 +30,7 @@ use std::env;
 use std::io;
 
 use plugin::{PandocPlugin, SvgdxPlugin};
-use serde_json::{from_reader, to_writer, Value};
+use serde_json::{Value, from_reader, to_writer};
 
 fn main() {
     let embed = env::args().nth(1).unwrap_or_default().into();

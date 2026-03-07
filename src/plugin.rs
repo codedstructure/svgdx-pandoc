@@ -1,5 +1,5 @@
 use crate::convert::PngConverter;
-use crate::transform::{svgdx_handler, TransformResult};
+use crate::transform::{TransformResult, svgdx_handler};
 
 use serde_json::Value;
 
@@ -125,16 +125,13 @@ impl SvgdxPlugin {
 impl PandocPlugin for SvgdxPlugin {
     /// Extract content of `svgdx`-fenced code blocks
     fn select_object(&self, object: &serde_json::Map<String, Value>) -> Option<String> {
-        if object.get("t") == Some(&Value::String("CodeBlock".to_string())) {
-            if let Some(Value::Array(inner)) = object.get("c") {
-                if let [Value::Array(meta), Value::String(content)] = &inner[..] {
-                    if let [_, Value::Array(classes), _] = &meta[..] {
-                        if classes.first() == Some(&Value::String("svgdx".to_string())) {
-                            return Some(content.clone());
-                        }
-                    }
-                }
-            }
+        if object.get("t") == Some(&Value::String("CodeBlock".to_string()))
+            && let Some(Value::Array(inner)) = object.get("c")
+            && let [Value::Array(meta), Value::String(content)] = &inner[..]
+            && let [_, Value::Array(classes), _] = &meta[..]
+            && classes.first() == Some(&Value::String("svgdx".to_string()))
+        {
+            return Some(content.clone());
         }
         None
     }
